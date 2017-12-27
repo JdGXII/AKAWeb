@@ -585,6 +585,15 @@ namespace AKAWeb_v01.Controllers
                     query.Append(category_filter);
                     query.Append("'");
                 }
+                if (title_filter != "ALL" && institution_filter == "ALL" && category_filter != "ALL")
+                {
+                    query.Append("title = '");
+                    query.Append(title_filter);
+                    query.Append("'");
+                    query.Append(" AND category = '");
+                    query.Append(category_filter);
+                    query.Append("'");
+                }
 
 
             }
