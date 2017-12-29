@@ -21,20 +21,20 @@
 
 
         <div class="row form-group">
-            <div class="col-md-3">
+            <div class="col-xs-3">
                 @Html.Label("Title")
                 @Html.DropDownList("title_filter", ViewData["title_filter"] as SelectList, new { @class = "form-control" })
             </div>
-            <div class="col-md-3">
+            <div class="col-xs-3">
                 @Html.Label("Institution")
                 @Html.DropDownList("institution_filter", ViewData["institution_filter"] as SelectList, new { @class = "form-control" })
             </div>
-            <div class="col-md-3">
+            <div class="col-xs-3">
                 @Html.Label("Category")
                 @Html.DropDownList("category_filter", ViewData["category_filter"] as SelectList, new { @class = "form-control" })
             </div>
 
-            <div class="col-md-3">
+            <div class="col-xs-3">
 
                 <button type="submit" class="btn btn-default" style="margin-top:25px;">Go</button>
             </div>
