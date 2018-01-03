@@ -957,20 +957,48 @@ namespace AKAWeb_v01.Controllers
 
         }
 
+        //retrieves the highest sort order number of pages within a section
+        //receives the section id as a string
+        //returns the highest sort order number belonging to a page in that section as an int
+        //this function is meant to be used from the CreatePage POST Action
+        private int getMaxSortOrderFromSection(string section_id)
+        {
+            int max_sort_order = 0;
+            DBConnection testconn = new DBConnection();
+            string query = "SELECT MAX(sort_order) FROM Pages WHERE section = @sectionId";
+            Dictionary<string, Object> query_params = new Dictionary<string, Object>();
+            query_params.Add("@sectionId", section_id);
+            SqlDataReader dataReader = testconn.ReadFromProduction(query, query_params);
+            //if the datareader is null it means the section probably doesn't have any pages 
+            //therefore the sort order should be 0
+            if(dataReader != null)
+            {
+                while (dataReader.Read())
+                {
+                    max_sort_order = Int32.Parse(dataReader.GetValue(0).ToString());
+                }
+            }
+
+            return max_sort_order;
+        }
+
         [HttpPost, ValidateInput(false)]
         public ActionResult CreatePage(string title, string content, string SectionList)
         {
             //uncomment the next line to check content being passed through form
             //System.Web.HttpContext.Current.Session["debug"] = Request.Files.Count;
 
+            int sort_order = getMaxSortOrderFromSection(SectionList) +1;
             DBConnection testconn = new DBConnection();
             Dictionary<string, Object> query_params = new Dictionary<string, Object>();
             query_params.Add("@title", title);
             query_params.Add("@content", content);
             query_params.Add("@section", SectionList);
+            query_params.Add("@sortOrder", sort_order);
+            
             //original query to be executed. It will change if an image is being updated
             string query = "INSERT into Pages (title, subheader_image, content, created_at, modified_at, section, isAlive, sort_order)" +
-                "VALUES (@title, ' ', @content, (select getdate()), (select getdate()), @section, 1, (SELECT MAX(sort_order) FROM Pages WHERE section = @section)+1) ";
+                "VALUES (@title, ' ', @content, (select getdate()), (select getdate()), @section, 1, @sortOrder)";
             //check if user is updating the page's subheader image by looking for the file in the request
             //if he is, this will change the query to be executed
             if (Request.Files.Count > 0)
@@ -985,7 +1013,8 @@ namespace AKAWeb_v01.Controllers
                         file.SaveAs(path);
                         string pathForDB = "~/Content/Images/Subheaders/" + fileName.ToString();
                         //query = "INSERT into Pages (title, subheader_image, content, created_at, modified_at, section) VALUES (" + title + ", " + pathForDB + ", " + content + ", getdate(), getdate(), " + SectionList + ")";
-                        query = "INSERT into Pages(title, subheader_image, content, created_at, modified_at, section, isAlive) VALUES(@title, @subheaderImage, @content, getdate(), getdate(), @section, 1)";
+                        query = "INSERT into Pages (title, subheader_image, content, created_at, modified_at, section, isAlive, sort_order)" +
+                "VALUES (@title, @subheaderImage, @content, (select getdate()), (select getdate()), @section, 1, @sortOrder)";
                         ViewBag.Message = "File uploaded successfully";
                         query_params.Add("@subheaderImage", pathForDB);
 
