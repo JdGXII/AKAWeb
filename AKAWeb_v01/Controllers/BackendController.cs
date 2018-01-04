@@ -2806,20 +2806,28 @@ namespace AKAWeb_v01.Controllers
                 if (userpermission >= 2)
                 {
                     StringBuilder message = new StringBuilder("<div>Job Posted:<br>");
+                    message.Append("Senders name: ");
                     message.Append(model.senders_name);
                     message.Append("<br>");
+                    message.Append("Email: ");
                     message.Append(model.email);
                     message.Append("<br>");
+                    message.Append("Institution name: ");
                     message.Append(model.instintution_name);
                     message.Append("<br>");
+                    message.Append("Department name: ");
                     message.Append(model.department_name);
                     message.Append("<br>");
+                    message.Append("Title position: ");
                     message.Append(model.title_position);
                     message.Append("<br>");
+                    message.Append("Category: ");
                     message.Append(model.category);
                     message.Append("<br>");
+                    message.Append("Closing date: ");
                     message.Append(model.closing_date);
                     message.Append("<br>");
+                    message.Append("Job url: ");
                     message.Append(model.job_url);
                     message.Append("</div>");
                     EmailService email = new EmailService(message.ToString(), "kims@hkusa.com", "New Job Posting", true);
