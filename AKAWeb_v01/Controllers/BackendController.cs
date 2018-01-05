@@ -545,7 +545,7 @@ namespace AKAWeb_v01.Controllers
                     Dictionary<string, Object> query_params = new Dictionary<string, object>();
                     query_params.Add("@name", name);
                     query_params.Add("@email", email);
-                    query_params.Add("@password", password);
+                    query_params.Add("@password", hashed_password);
                     query_params.Add("@access", 1);
                     testconn.WriteToProduction(query, query_params);
                     testconn.CloseConnection();
