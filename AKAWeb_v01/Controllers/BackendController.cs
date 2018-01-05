@@ -979,6 +979,9 @@ namespace AKAWeb_v01.Controllers
                 }
             }
 
+            testconn.CloseDataReader();
+            testconn.CloseConnection();
+
             return max_sort_order;
         }
 
