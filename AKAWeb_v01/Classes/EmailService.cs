@@ -30,6 +30,8 @@ namespace AKAWeb_v01.Classes
 
         public bool sendEmail()
         {
+
+
             try
             {
                 
@@ -41,10 +43,12 @@ namespace AKAWeb_v01.Classes
                 mail.Subject = subject;
                 mail.Body = message;
 
-                SmtpServer.Port = 587;
+                SmtpServer.Port = 25;
+               
                 SmtpServer.Credentials = new System.Net.NetworkCredential(email, password);
-                SmtpServer.EnableSsl = true;
-                mail.IsBodyHtml = isHtml;
+                //SmtpServer.EnableSsl = true;
+                
+                //mail.IsBodyHtml = isHtml;
 
                 SmtpServer.Send(mail);
 
