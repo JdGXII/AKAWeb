@@ -964,10 +964,11 @@ namespace AKAWeb_v01.Controllers
         private int getMaxSortOrderFromSection(string section_id)
         {
             int max_sort_order = 0;
+            int sect_id = Int32.Parse(section_id);
             DBConnection testconn = new DBConnection();
             string query = "SELECT MAX(sort_order) FROM Pages WHERE section = @sectionId";
             Dictionary<string, Object> query_params = new Dictionary<string, Object>();
-            query_params.Add("@sectionId", section_id);
+            query_params.Add("@sectionId", sect_id);
             SqlDataReader dataReader = testconn.ReadFromProduction(query, query_params);
             //if the datareader is null it means the section probably doesn't have any pages 
             //therefore the sort order should be 0
@@ -975,7 +976,12 @@ namespace AKAWeb_v01.Controllers
             {
                 while (dataReader.Read())
                 {
-                    max_sort_order = Int32.Parse(dataReader.GetValue(0).ToString());
+                    if(dataReader.GetValue(0).ToString() != "")
+                    {
+      
+                        max_sort_order = Int32.Parse(dataReader.GetValue(0).ToString());
+                    }
+                    
                 }
             }
 

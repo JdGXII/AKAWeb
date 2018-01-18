@@ -112,7 +112,7 @@ namespace AKAWeb_v01.Controllers
 
         public ActionResult Institutions()
         {
-            var institutions = getInstitutions("SELECT TOP 100 institution_id, department_id, state_id FROM institution_has_state_has_department");
+            var institutions = getInstitutions("SELECT institution_id, department_id, state_id FROM institution_has_state_has_department");
             ViewData["state_filter"] = statesSelectList(getStates());
             ViewData["institution_filter"] = InstitutionsSelectList(institutions);
             ViewData["department_filter"] = departmentsSelectList(getDepartments());
@@ -425,7 +425,7 @@ namespace AKAWeb_v01.Controllers
         [HttpPost]
         public ActionResult InstitutionFilter(string state_filter, string institution_filter, string department_filter)
         {
-            StringBuilder query = new StringBuilder("SELECT TOP 100 institution_id, department_id, state_id FROM institution_has_state_has_department WHERE ");
+            StringBuilder query = new StringBuilder("SELECT institution_id, department_id, state_id FROM institution_has_state_has_department WHERE ");
             
             if (state_filter == "ALL" && institution_filter == "ALL" && department_filter == "ALL")
             {
@@ -607,7 +607,7 @@ namespace AKAWeb_v01.Controllers
         public ActionResult JobPostings()
         {
             var jobs = getJobPostings("SELECT id, title, category, location, close_date, url, submitted_by, email, institution, department FROM Job_Posting");
-            var institutions = getInstitutions("SELECT TOP 100 institution_id, department_id, state_id FROM institution_has_state_has_department");
+            var institutions = getInstitutions("SELECT institution_id, department_id, state_id FROM institution_has_state_has_department");
             ViewData["category_filter"] = JobCategorySelectList();
             ViewData["institution_filter"] = InstitutionsSelectList(institutions);
             ViewData["title_filter"] = JobTitleSelectList(jobs);

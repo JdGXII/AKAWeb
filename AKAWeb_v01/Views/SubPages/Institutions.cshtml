@@ -22,19 +22,16 @@
 
     
     <div class="row form-group">
-        <div class="col-xs-3">
+        <div class="col-xs-4">
             @Html.Label("State")
             @Html.DropDownList("state_filter", ViewData["state_filter"] as SelectList, new { @class = "form-control" })
         </div>
-        <div class="col-xs-3">
+        <div class="col-xs-4">
             @Html.Label("Institution")
             @Html.DropDownList("institution_filter", ViewData["institution_filter"] as SelectList, new { @class = "form-control" })
         </div>
-        <div class="col-xs-3">
-            @Html.Label("Department")
-            @Html.DropDownList("department_filter", ViewData["department_filter"] as SelectList, new { @class = "form-control" })
-        </div>
-        <div class="col-xs-3">
+ 
+        <div class="col-xs-4">
             
             <button type="submit" class="btn btn-default" style="margin-top:25px;">Go</button>
         </div>
