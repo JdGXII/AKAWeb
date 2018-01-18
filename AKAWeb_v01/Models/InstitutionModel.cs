@@ -64,15 +64,15 @@ namespace AKAWeb_v01.Models
             {
                 this.bac_string = "Bachelors";
             }
-            else if (this.associates)
+            if (this.associates)
             {
                 this.asc_string = "Associates";
             }
-            else if (this.phd)
+            if (this.phd)
             {
                 this.phd_string = "Doctoral";
             }
-            else if (this.masters)
+            if (this.masters)
             {
                 this.mas_string = "Masters";
             }

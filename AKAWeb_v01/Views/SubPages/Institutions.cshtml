@@ -69,15 +69,15 @@
                 {
                     <span>@item.asc_string |</span>
                 }
-                else if (item.bachelors)
+                @if (item.bachelors)
                 {
                     <span>@item.bac_string |</span>
                 }
-                else if (item.masters)
+                @if (item.masters)
                 {
                     <span>@item.mas_string |</span>
                 }
-                else if (item.phd)
+                @if (item.phd)
                 {
                     <span>@item.phd_string |</span>
                 }
