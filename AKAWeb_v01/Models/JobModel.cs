@@ -32,6 +32,8 @@ namespace AKAWeb_v01.Models
         {
             List<SelectListItem> myList = new List<SelectListItem>();
             var data = new[]{
+
+                 new SelectListItem{ Value="ALL",Text="ALL"},
                  new SelectListItem{ Value="Admin Dean/Chairs",Text="Admin Dean/Chairs"},
                  new SelectListItem{ Value="Tenure Track",Text="Tenure Track"},
                  new SelectListItem{ Value="Non Tenure",Text="Non Tenure"}

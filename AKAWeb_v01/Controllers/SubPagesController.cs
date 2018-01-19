@@ -422,6 +422,27 @@ namespace AKAWeb_v01.Controllers
             return list;
         }
 
+        private List<SelectListItem> InstitutionsSelectListNoIDs(List<InstitutionModel> institutions)
+        {
+            List<SelectListItem> list = new List<SelectListItem>();
+            SelectListItem item = new SelectListItem();
+            item.Value = "ALL";
+            item.Text = "ALL";
+            list.Add(item);
+
+            foreach (InstitutionModel institution in institutions)
+            {
+                item = new SelectListItem();
+                item.Value = institution.name;
+                item.Text = institution.name;
+
+                list.Add(item);
+
+            }
+
+            return list;
+        }
+
         [HttpPost]
         public ActionResult InstitutionFilter(string state_filter, string institution_filter, string department_filter)
         {
@@ -486,8 +507,6 @@ namespace AKAWeb_v01.Controllers
             DBConnection testconn = new DBConnection();
             List<JobModel> jobs = new List<JobModel>();
 
-            //deafult query:
-            //query = "SELECT id, title, category, location, close_date, url, submitted_by, email, institution, department FROM Job_Posting";
             SqlDataReader dataReader = testconn.ReadFromTest(query);
             if (dataReader.HasRows)
             {
@@ -552,29 +571,33 @@ namespace AKAWeb_v01.Controllers
                     query.Append("title = '");
                     query.Append(title_filter);
                     query.Append("'");
-                    query.Append(" AND institution_id = ");
+                    query.Append(" AND institution = '");
                     query.Append(institution_filter);
+                    query.Append("'");
                 }
                 if (title_filter != "ALL" && institution_filter != "ALL" && category_filter != "ALL")
                 {
                     query.Append("title = '");
                     query.Append(title_filter);
                     query.Append("'");
-                    query.Append(" AND institution_id = ");
+                    query.Append(" AND institution = '");
                     query.Append(institution_filter);
+                    query.Append("'");
                     query.Append(" AND category = '");
                     query.Append(category_filter);
                     query.Append("'");
                 }
                 if (title_filter == "ALL" && institution_filter != "ALL" && category_filter == "ALL")
                 {
-                    query.Append("institution_id = ");
+                    query.Append("institution = '");
                     query.Append(institution_filter);
+                    query.Append("'");
                 }
                 if (title_filter == "ALL" && institution_filter != "ALL" && category_filter != "ALL")
                 {
-                    query.Append("institution_id = ");
+                    query.Append("institution = '");
                     query.Append(institution_filter);
+                    query.Append("'");
                     query.Append(" AND category = '");
                     query.Append(category_filter);
                     query.Append("'");
@@ -609,7 +632,7 @@ namespace AKAWeb_v01.Controllers
             var jobs = getJobPostings("SELECT id, title, category, location, close_date, url, submitted_by, email, institution, department FROM Job_Posting");
             var institutions = getInstitutions("SELECT institution_id, department_id, state_id FROM institution_has_state_has_department");
             ViewData["category_filter"] = JobCategorySelectList();
-            ViewData["institution_filter"] = InstitutionsSelectList(institutions);
+            ViewData["institution_filter"] = InstitutionsSelectListNoIDs(institutions);
             ViewData["title_filter"] = JobTitleSelectList(jobs);
             var model = jobs;
             if (TempData["model"] != null)
