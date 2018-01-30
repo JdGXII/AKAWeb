@@ -2814,32 +2814,62 @@ namespace AKAWeb_v01.Controllers
 
                 if (userpermission >= 2)
                 {
-                    StringBuilder message = new StringBuilder("<div>Job Posted:<br>");
-                    message.Append("Senders name: ");
-                    message.Append(model.senders_name);
-                    message.Append("<br>");
-                    message.Append("Email: ");
-                    message.Append(model.email);
-                    message.Append("<br>");
-                    message.Append("Institution name: ");
-                    message.Append(model.instintution_name);
-                    message.Append("<br>");
-                    message.Append("Department name: ");
-                    message.Append(model.department_name);
-                    message.Append("<br>");
+                   
+                    String closeDateString = model.closing_date.Date.ToString("MM/dd/yyyy");
+
+
+             //Below code builds the email to be sent to the customer
+
+                    StringBuilder message = new StringBuilder("Thanks for submitting a job posting to the American Kinesiology Association." +
+                        "This email confirms that the " + model.title_position + " position you submitted, has been received.");
+                    message.AppendLine();
+                    message.AppendLine("Please check the listing at this link in 24 hours.");
+                    message.AppendLine();
+                    message.AppendLine("http://www.americankinesiology.org/SubPages/Pages/Current%20Openings");
+                    message.AppendLine();
+                    message.AppendLine("The posting will expire on the closing date you entered or 90 days from entry." + 
+                        "If you would like the posting to beyond 90 days, you will need to resubmit the posting." + 
+                        "If the position has been filled prior to the closing date and you would like it deleted, just let us know and we'll do so upon your request.");
+                    message.AppendLine("If I can be of any further assistance, feel free to let me know.");
+                    message.AppendLine();
+                    message.AppendLine("Best regards,");
+                    message.AppendLine();
+                    message.AppendLine("Kim Scott, Business Manager");
+                    message.AppendLine("American Kinesiology Association");
+                    message.AppendLine("1607 N.Market Street");
+                    message.AppendLine("Champaign, IL 61820");
+                    message.AppendLine("Tel: (217) 403-7545");
+                    message.AppendLine("Fax: (217) 351-2674");
+                    message.AppendLine("Email: kims@hkusa.com");
+                    message.AppendLine("www.AmericanKinesiology.org");
+                    message.AppendLine();
+                    message.AppendLine();
+
+                    //2nd portion of email showing the details of posting request
+
+
+                    message.AppendLine();
                     message.Append("Title position: ");
-                    message.Append(model.title_position);
-                    message.Append("<br>");
+                    message.AppendLine(model.title_position);
                     message.Append("Category: ");
-                    message.Append(model.category);
-                    message.Append("<br>");
+                    message.AppendLine(model.category);
+                    message.Append("Institution name: ");
+                    message.AppendLine(model.instintution_name);
                     message.Append("Closing date: ");
-                    message.Append(model.closing_date);
-                    message.Append("<br>");
+                    message.AppendLine(closeDateString);
                     message.Append("Job url: ");
-                    message.Append(model.job_url);
-                    message.Append("</div>");
-                    EmailService email = new EmailService(message.ToString(), "kims@hkusa.com", "New Job Posting", true);
+                    message.AppendLine(model.job_url);
+                    message.Append("Senders name: ");
+                    message.AppendLine(model.senders_name);
+                    message.Append("Email: ");
+                    message.AppendLine(model.email);
+                    message.Append("Department name: ");
+                    message.AppendLine(model.department_name);
+                    message.AppendLine();
+                   
+                    //Send the email to Kim Scott, myself and the poster's email
+
+                    EmailService email = new EmailService(message.ToString(), "kims@hkusa.com, " + model.email + ", thomas.matthew.grimm@gmail.com", "New Job Posting", true);
                     bool success = email.sendEmail();
                     if (success)
                     {

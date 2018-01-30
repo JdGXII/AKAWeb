@@ -9,6 +9,10 @@ namespace AKAWeb_v01.Models
 {
     public class JobModel
     {
+
+        //DateTime closingDate = DateTime.Now.AddMonths(3);
+        
+
         [Display(Name = "Name")]
         public string senders_name { get; set; }
         [Display(Name = "Email")]
@@ -22,7 +26,7 @@ namespace AKAWeb_v01.Models
         [Display(Name = "Category to place it in")]
         public string category { get; set; }
         [Display(Name = "Closing date")]
-        public DateTime closing_date { get; set; }
+        public DateTime closing_date { get; set; } = DateTime.Now.AddMonths(3).Date;
         [Display(Name = "URL of complete job description")]
         public string job_url { get; set; }
 
@@ -33,10 +37,11 @@ namespace AKAWeb_v01.Models
             List<SelectListItem> myList = new List<SelectListItem>();
             var data = new[]{
 
-                 new SelectListItem{ Value="ALL",Text="ALL"},
-                 new SelectListItem{ Value="Admin Dean/Chairs",Text="Admin Dean/Chairs"},
+                 //new SelectListItem{ Value="ALL",Text="ALL"},
+             
                  new SelectListItem{ Value="Tenure Track",Text="Tenure Track"},
-                 new SelectListItem{ Value="Non Tenure",Text="Non Tenure"}
+                 new SelectListItem{ Value="Non-Tenure",Text="Non-Tenure"},
+                 new SelectListItem{ Value="Admin Dean/Chairs",Text="Admin Dean/Chairs"}
              };
             myList = data.ToList();
             return myList;
