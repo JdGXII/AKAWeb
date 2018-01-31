@@ -2821,15 +2821,15 @@ namespace AKAWeb_v01.Controllers
              //Below code builds the email to be sent to the customer
 
                     StringBuilder message = new StringBuilder("Thanks for submitting a job posting to the American Kinesiology Association." +
-                        "This email confirms that the " + model.title_position + " position you submitted, has been received.");
+                        " This email confirms that the " + model.title_position + " position you submitted has been received.");
                     message.AppendLine();
                     message.AppendLine("Please check the listing at this link in 24 hours.");
                     message.AppendLine();
                     message.AppendLine("http://www.americankinesiology.org/SubPages/Pages/Current%20Openings");
                     message.AppendLine();
                     message.AppendLine("The posting will expire on the closing date you entered or 90 days from entry." + 
-                        "If you would like the posting to beyond 90 days, you will need to resubmit the posting." + 
-                        "If the position has been filled prior to the closing date and you would like it deleted, just let us know and we'll do so upon your request.");
+                        " If you would like the posting to extend beyond 90 days, you will need to resubmit the posting." + 
+                        " If the position has been filled prior to the closing date and you would like it deleted, just let us know and we'll do so upon your request.");
                     message.AppendLine("If I can be of any further assistance, feel free to let me know.");
                     message.AppendLine();
                     message.AppendLine("Best regards,");
@@ -2869,7 +2869,7 @@ namespace AKAWeb_v01.Controllers
                    
                     //Send the email to Kim Scott, myself and the poster's email
 
-                    EmailService email = new EmailService(message.ToString(), "kims@hkusa.com, " + model.email + ", thomas.matthew.grimm@gmail.com", "New Job Posting", true);
+                    EmailService email = new EmailService(message.ToString(), "kims@hkusa.com, " + model.email + ", thomas.matthew.grimm@gmail.com, gwenm@hkusa.com, jmoore@americankinesiology.org", "New Job Posting", true);
                     bool success = email.sendEmail();
                     if (success)
                     {
