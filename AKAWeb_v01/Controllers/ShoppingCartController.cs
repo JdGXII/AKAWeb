@@ -187,6 +187,12 @@ namespace AKAWeb_v01.Controllers
 
 
                 string query = "INSERT INTO User_Has_Product (user_id, product_id, product_start, product_end, isValid) VALUES (@userId, @productId, getdate(), dateadd(year,1,getdate()), 1)";
+                //Update access level for Membership purchasers
+                // This did not work. Likely adding the UPDATE query to the existing query is the culprit. Need to separate these operations.
+                //if (item.product_id < 7)
+                //{
+                //    query = query + " UPDATE Users SET access = 2 WHERE user_id = @userID AND access < 3";
+                //}
 
                 Dictionary<string, Object> query_params = new Dictionary<string, Object>();
                 query_params.Add("@userId", user_id);
@@ -244,25 +250,39 @@ namespace AKAWeb_v01.Controllers
         private void purchaseEmail()
         {
             string sendTo = System.Web.HttpContext.Current.Session["email"].ToString();
-            string subject = "American Kinesiology Purchase Confirmation";
-            StringBuilder message = new StringBuilder("<div>Thank you for your purchase. Below you can find the list of items you purchased: <br><ul>");
+            string subject = "AKA Membership Purchase/Renewal";
+            StringBuilder message = new StringBuilder("Thank you for the purchase of your membership in the American Kinesiology Association. This email confirms that you have purchased the following:");
+
             CartViewModel cartmodel = getModel();
 
             foreach(CartModel item in cartmodel.cart)
             {
-                message.Append("<li>");
+                message.AppendLine();
                 message.Append(item.product_description);
-                message.Append(" price: ");
+                message.Append(": Amount Paid: $");
                 message.Append(item.product_cost);
-                message.Append("</li>");
-                
+                message.AppendLine();
             }
-            message.Append("</ul></div>");
 
-            EmailService email = new EmailService(message.ToString(), sendTo, subject, true);
+            message.AppendLine("The AKA Business Office will be sending an official receipt to you by email in the next 24-48 hours.");
+            message.AppendLine();
+            message.AppendLine("If I can be of any further assistance, feel free to let me know.");
+            message.AppendLine();
+            message.AppendLine("Best regards, ");
+            message.AppendLine();
+            message.AppendLine("Kim Scott, Business Manager");
+            message.AppendLine("American Kinesiology Association");
+            message.AppendLine("1607 N.Market Street");
+            message.AppendLine("Champaign, IL 61820");
+            message.AppendLine("Tel: (217) 403-7545");
+            message.AppendLine("Fax: (217) 351-2674");
+            message.AppendLine("Email: kims@hkusa.com");
+            message.AppendLine("www.AmericanKinesiology.org");
+
+            EmailService email = new EmailService(message.ToString(), sendTo + ", KimScott@americankinesiology.org, gwenm@hkusa.com, jmoore@americankinesiology.org, thomas.matthew.grimm@gmail.com", subject, true);
             bool success = email.sendEmail();
 
-
+        
 
         }
 
