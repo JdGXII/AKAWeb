@@ -187,18 +187,25 @@ namespace AKAWeb_v01.Controllers
 
 
                 string query = "INSERT INTO User_Has_Product (user_id, product_id, product_start, product_end, isValid) VALUES (@userId, @productId, getdate(), dateadd(year,1,getdate()), 1)";
-                //Update access level for Membership purchasers
-                // This did not work. Likely adding the UPDATE query to the existing query is the culprit. Need to separate these operations.
-                //if (item.product_id < 7)
-                //{
-                //    query = query + " UPDATE Users SET access = 2 WHERE user_id = @userID AND access < 3";
-                //}
 
                 Dictionary<string, Object> query_params = new Dictionary<string, Object>();
                 query_params.Add("@userId", user_id);
                 query_params.Add("@productId", product_id);
 
                 testconn.WriteToProduction(query, query_params);
+
+                //Update access level for Membership purchasers
+                if (item.product_id < 7)
+                {
+                    string user_id2 = item.user_id.ToString();
+
+                    string query_sub = "UPDATE Users SET access = 2 WHERE (id = @userID2 AND access < 3)";
+                    
+
+                    Dictionary<string, Object> query_sub_params = new Dictionary<string, Object>();
+                    query_sub_params.Add("@userId2", user_id2);
+                    testconn.WriteToProduction(query_sub, query_sub_params);
+                }
             }
             testconn.CloseConnection();
         }
@@ -252,7 +259,7 @@ namespace AKAWeb_v01.Controllers
             string sendTo = System.Web.HttpContext.Current.Session["email"].ToString();
             string subject = "AKA Membership Purchase/Renewal";
             StringBuilder message = new StringBuilder("Thank you for the purchase of your membership in the American Kinesiology Association. This email confirms that you have purchased the following:");
-
+            message.AppendLine();
             CartViewModel cartmodel = getModel();
 
             foreach(CartModel item in cartmodel.cart)
@@ -263,7 +270,7 @@ namespace AKAWeb_v01.Controllers
                 message.Append(item.product_cost);
                 message.AppendLine();
             }
-
+            message.AppendLine();
             message.AppendLine("The AKA Business Office will be sending an official receipt to you by email in the next 24-48 hours.");
             message.AppendLine();
             message.AppendLine("If I can be of any further assistance, feel free to let me know.");
