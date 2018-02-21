@@ -110,6 +110,7 @@ namespace AKAWeb_v01.Controllers
                 cart_list.Add(cart);
 
             }
+            testconn.CloseDataReader();
             testconn.CloseConnection();
             return cart_list;
 

@@ -1080,7 +1080,7 @@ namespace AKAWeb_v01.Controllers
                     }
                     testconn.WriteToProduction(query2, update_params);
 
-
+                    testconn.CloseDataReader();
                     testconn.CloseConnection();
                     TempData["SectionForDropDown"] = section_id;
                     
@@ -2815,15 +2815,42 @@ namespace AKAWeb_v01.Controllers
                 if (userpermission >= 2)
                 {
                    
+                    //Begin Add the job posting to the database
+                    DBConnection testconn = new DBConnection();
+                    string query = "INSERT INTO americ41_admin.Job_Posting (title, category, location, close_date, url, submitted_by, email, institution, department) VALUES " +
+                        "(@title, @category, @location, @closeDate, @url, @submittedBy, @email, @institution, @department)";
+
+                    Dictionary<string, Object> query_params = new Dictionary<string, Object>();
+                    query_params.Add("@title", model.title_position);
+                    query_params.Add("@category", model.category);
+                    query_params.Add("@location", model.instintution_name);
+                    query_params.Add("@closeDate", model.closing_date);
+                    query_params.Add("@url", model.job_url);
+                    query_params.Add("@submittedBy", model.senders_name);
+                    query_params.Add("@email", model.email);
+                    query_params.Add("@institution", model.instintution_name);
+                    query_params.Add("@department", model.department_name);
+
+                    testconn.WriteToProduction(query, query_params);
+                    //End Add Job Posting to Database
+
+                    //Begin Remove expired postings
+                    String currentDate = DateTime.Now.Date.ToString("yyyy-MM-dd");
+                    string query2 = "DELETE FROM americ41_admin.Job_Posting WHERE close_date < @currentDate";
+                    query_params.Add("@currentDate", currentDate);
+                    testconn.WriteToProduction(query2, query_params);
+
+
+                    //End Remove expired postings
+                    testconn.CloseConnection();
+                    
                     String closeDateString = model.closing_date.Date.ToString("MM/dd/yyyy");
-
-
-             //Below code builds the email to be sent to the customer
+                    //Below code builds the email to be sent to the customer
 
                     StringBuilder message = new StringBuilder("Thanks for submitting a job posting to the American Kinesiology Association." +
                         " This email confirms that the " + model.title_position + " position you submitted has been received.");
                     message.AppendLine();
-                    message.AppendLine("Please check the listing at this link in 24 hours.");
+                    message.AppendLine("Please review the listing at this link for accuracy.");
                     message.AppendLine();
                     message.AppendLine("http://www.americankinesiology.org/SubPages/Pages/Current%20Openings");
                     message.AppendLine();
@@ -2866,10 +2893,9 @@ namespace AKAWeb_v01.Controllers
                     message.Append("Department name: ");
                     message.AppendLine(model.department_name);
                     message.AppendLine();
-                   
-                    //Send the email to Kim Scott, myself and the poster's email
 
-                    EmailService email = new EmailService(message.ToString(), "kims@hkusa.com, " + model.email + ", thomas.matthew.grimm@gmail.com, gwenm@hkusa.com, jmoore@americankinesiology.org", "New Job Posting", true);
+                    //Send the email to Kim Scott, myself and the poster's email
+                    EmailService email = new EmailService(message.ToString(), "kims@hkusa.com, " + model.email + ",  gwenm@hkusa.com, jmoore@americankinesiology.org", "New Job Posting", true);
                     bool success = email.sendEmail();
                     if (success)
                     {
@@ -3050,9 +3076,9 @@ namespace AKAWeb_v01.Controllers
                         {
                             success = false;
                         }
-
+                        
                     }
-
+                    testconn.CloseConnection();
                     if (success)
                     {
                         TempData["sortingSuccess"] = "Sorting was succesful";

@@ -10,9 +10,6 @@ namespace AKAWeb_v01.Models
     public class JobModel
     {
 
-        //DateTime closingDate = DateTime.Now.AddMonths(3);
-        
-
         [Display(Name = "Name")]
         public string senders_name { get; set; }
         [Display(Name = "Email")]

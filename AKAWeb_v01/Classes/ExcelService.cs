@@ -273,7 +273,7 @@ namespace AKAWeb_v01.Classes
             string query = "INSERT INTO User_Has_Product (user_id, product_id, product_end, isValid) VALUES(" + user_id.ToString() + "," + product_id.ToString() + ", '" + end_date + "',1)";
             string b = "";
             testconn.WriteToTest(query);
-
+            testconn.CloseConnection();
         }
 
 
