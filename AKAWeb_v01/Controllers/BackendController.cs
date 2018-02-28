@@ -2023,6 +2023,12 @@ namespace AKAWeb_v01.Controllers
 
         }
 
+        public JsonResult HyperlinkJsonList()
+        {
+            List<UrlModelPair> list = getHyperLinksForJson();
+            return Json(list, JsonRequestBehavior.AllowGet);
+        }
+
         private List<ImagePair> getImagesForJson()
         {
 
@@ -2045,6 +2051,28 @@ namespace AKAWeb_v01.Controllers
             testconn.CloseConnection();
             return image_list;
 
+        }
+
+        private List<UrlModelPair> getHyperLinksForJson()
+        {
+            List<UrlModelPair> links_list = new List<UrlModelPair>();
+            DBConnection testconn = new DBConnection();
+            string query = "SELECT title, url FROM Hyperlinks";
+            SqlDataReader dataReader = testconn.ReadFromTest(query);
+            //while there are records in the datareader
+            while (dataReader.Read())
+            {
+
+                string title = dataReader.GetValue(0).ToString();
+                string url = dataReader.GetValue(1).ToString();
+                
+                
+                links_list.Add(new UrlModelPair { title = title, value = url });
+
+            }
+            testconn.CloseDataReader();
+            testconn.CloseConnection();
+            return links_list;
         }
 
         public ActionResult ListProducts()
@@ -2071,6 +2099,132 @@ namespace AKAWeb_v01.Controllers
                 return RedirectToAction("MyProfile");
             }
 
+        }
+
+        public ActionResult ListHyperlinks()
+        {
+            if (System.Web.HttpContext.Current.Session["username"] != null)
+            {
+                ViewData["BackendPages"] = getBackendPages();
+                var model = getHyperlinks();
+                if (TempData["success"] != null)
+                {
+                    ViewBag.UploadSuccess = TempData["success"].ToString();
+                }
+                return View(model);
+            }
+            else
+            {
+                return RedirectToAction("Index");
+            }
+        }
+
+        [HttpPost]
+        public ActionResult SaveHyperlink(string url, string title)
+        {
+            if (System.Web.HttpContext.Current.Session["username"] != null)
+            {
+                DBConnection testconn = new DBConnection();
+                string query = $"INSERT INTO Hyperlinks(url, title) VALUES('{url}', '{title}')";
+                bool success = testconn.WriteToTest(query);
+                testconn.CloseConnection();
+
+                if (success)
+                {
+                    TempData["success"] = "Hyperlink succesfully created.";
+                }
+                else
+                {
+                    TempData["success"] = "Something went wrong. Hyperlink not created.";
+                }
+                return RedirectToAction("ListHyperlinks");
+            }
+            else
+            {
+                return RedirectToAction("Index");
+            }
+
+        }
+
+        [HttpPost]
+        public ActionResult EditHyperlink(string url, string title,int id)
+        {
+            if (System.Web.HttpContext.Current.Session["username"] != null)
+            {
+                DBConnection testconn = new DBConnection();
+                string query = $"UPDATE Hyperlinks SET url ='{url}', title='{title}' WHERE id = {id}";
+                bool success = testconn.WriteToTest(query);
+                testconn.CloseConnection();
+                if (success)
+                {
+                    TempData["success"] = "Hyperlink succesfully edited.";
+                }
+                else
+                {
+                    TempData["success"] = "Something went wrong. Hyperlink not edited.";
+                }
+                return RedirectToAction("ListHyperlinks");
+            }
+            else
+            {
+                return RedirectToAction("Index");
+            }
+
+        }
+
+        public ActionResult DeleteUrl(int id)
+        {
+            if (System.Web.HttpContext.Current.Session["username"] != null)
+            {
+                DBConnection testconn = new DBConnection();
+                string query = $"DELETE FROM Hyperlinks WHERE id = {id}";
+                bool success = testconn.WriteToTest(query);
+                testconn.CloseConnection();
+
+                if (success)
+                {
+                    TempData["success"] = "Hyperlink succesfully deleted.";
+                }
+                else
+                {
+                    TempData["success"] = "Something went wrong. Hyperlink not deleted.";
+                }
+
+                return RedirectToAction("ListHyperlinks");
+            }
+            else
+            {
+                return RedirectToAction("Index");
+            }
+        }
+
+
+        private List<UrlModel> getHyperlinks()
+        {
+            List<UrlModel> links_list = new List<UrlModel>();
+            DBConnection testconn = new DBConnection();
+            string query = "SELECT title, url, id FROM Hyperlinks";
+            SqlDataReader dataReader = testconn.ReadFromTest(query);
+            //while there are records in the datareader
+            while (dataReader.Read())
+            {
+
+                string title = dataReader.GetValue(0).ToString();
+                string url = dataReader.GetValue(1).ToString();
+                int id = Int32.Parse(dataReader.GetValue(2).ToString());
+
+                UrlModel hyperlink = new UrlModel();
+                hyperlink.title = title;
+                hyperlink.url = url;
+                hyperlink.id = id;
+
+
+                links_list.Add(hyperlink);
+
+            }
+            testconn.CloseDataReader();
+            testconn.CloseConnection();
+            return links_list;
         }
 
         [HttpPost]

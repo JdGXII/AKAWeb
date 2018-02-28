@@ -1,0 +1,83 @@
+﻿@model  IEnumerable<AKAWeb_v01.Models.UrlModel>
+
+@{
+    ViewBag.Title = "List Hyperlinks";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Hyperlinks</h2>
+
+@section LeftMenu{
+    <div class="left-menu-title">Backend Controls</div>
+    <div class="left-menu">
+
+        @foreach (AKAWeb_v01.Models.BackendMenuModel menuitem in ViewData["BackendPages"] as List<AKAWeb_v01.Models.BackendMenuModel>)
+        {
+            <div class="left-menu-item">@Html.ActionLink(menuitem.title, menuitem.action, menuitem.controller, null, new { @class = "left-menu-link" })</div>
+        }
+
+    </div>
+}
+
+<p>
+<p style="color:red;"><b>@ViewBag.UploadSuccess</b></p>
+<a class="menu-link" href="#addImage" data-toggle="collapse">Save New Hyperlink</a>
+<div id="addImage" class="collapse">
+    @using (Html.BeginForm("SaveHyperlink", "Backend", FormMethod.Post, new { id = "content_form", enctype = "multipart/form-data" }))
+    {
+
+        
+        @Html.Label("Hyperlink URL")
+        <input class="form-control" id="fileUpload" type="text" name="url" placeholder="URL" />
+        @Html.Label("Hyperlink Title")
+        <input class="form-control" type="text" name="title" placeholder="Title" />
+        <button style="margin-top:5px;" type="submit" class="btn btn-default">Save URL</button>
+
+    }
+</div>
+</p>
+
+<table class="table">
+    <tr>
+        <th>
+            Url
+        </th>
+        <th>
+            Title
+        </th>
+
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        string formid = "edit" + item.id;
+        <tr>
+
+            <td>
+                @using (Html.BeginForm("EditHyperlink", "Backend", FormMethod.Post, new { id = formid }))
+                {
+                    <input value="@item.url" class="form-control" type="text" form="@formid" name="url" placeholder="@item.url" />
+                    <input type="hidden" form="@formid" value="@item.id" name="id" />
+                }
+
+            </td>
+            <td>
+
+                <input value="@item.title" class="form-control" type="text" form="@formid" name="title" placeholder="@item.title" />
+
+
+            </td>
+
+
+            <td>
+                <button type="submit" form="@formid" class="btn btn-default">Save Changes</button> |
+
+                @Html.ActionLink("Delete URL", "DeleteUrl", new { id = item.id, url = item.url }, null)
+
+            </td>
+        </tr>
+    }
+
+</table>
+
