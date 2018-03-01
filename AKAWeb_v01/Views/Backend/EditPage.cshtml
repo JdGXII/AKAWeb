@@ -14,11 +14,13 @@
 <script>
 tinymce.init({
         selector: 'textarea',
-        plugins: "image",
+        plugins: "image link",
         //add call to function to load current images
         image_list: "/Backend/ImageJsonList",
         paste_data_images: true,
-        extended_valid_elements: "iframe[src|title|width|height|allowfullscreen|frameborder|class|id]"
+        extended_valid_elements: "iframe[src|title|width|height|allowfullscreen|frameborder|class|id]",
+        toolbar: "link",
+        link_list: "/Backend/HyperlinkJsonList"
     });
 </script>
 <!--Following script generates the image preview in the subheader image part-->

@@ -187,6 +187,8 @@
     <Compile Include="Models\SectionModel.cs" />
     <Compile Include="Models\PageModel.cs" />
     <Compile Include="Models\MainMenuItem.cs" />
+    <Compile Include="Models\UrlModel.cs" />
+    <Compile Include="Models\UrlModelPair.cs" />
     <Compile Include="Models\UserHasProductModel.cs" />
     <Compile Include="Models\UserModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -296,7 +298,11 @@
     <Content Include="Views\Backend\JobPosting.cshtml" />
     <Content Include="Views\SubPages\JobPostings.cshtml" />
     <Content Include="Views\Backend\_AsyncGetPages.cshtml" />
+<<<<<<< HEAD
     <Content Include="Views\Backend\EditUsers.cshtml" />
+=======
+    <Content Include="Views\Backend\ListHyperlinks.cshtml" />
+>>>>>>> origin/master
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
