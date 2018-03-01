@@ -2047,6 +2047,26 @@ namespace AKAWeb_v01.Controllers
 
         }
 
+
+        public ActionResult EditUsers()
+        {
+            //check if user is logged in, if not, redirect them to login
+            if (System.Web.HttpContext.Current.Session["username"] != null)
+            {
+                string user_id = System.Web.HttpContext.Current.Session["userid"].ToString();
+                var model = getUserHasProducts(user_id);
+                ViewData["MyProfilePages"] = getMyProfilePages();
+                return View(model);
+
+            }
+            else
+            {
+                return RedirectToAction("Index");
+            }
+
+        }
+
+
         public ActionResult ListProducts()
         {
             if (System.Web.HttpContext.Current.Session["username"] != null)
