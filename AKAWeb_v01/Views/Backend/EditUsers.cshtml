@@ -1,0 +1,245 @@
+﻿@model  IEnumerable<AKAWeb_v01.Models.UserHasProductModel>
+
+@{
+    ViewBag.Title = "Manage Users";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Manage Users</h2>
+
+@section BackMenu{
+    <div class="left-menu-title">Backend Controls</div>
+    @*<div class="left-menu">
+
+        @foreach (AKAWeb_v01.Models.BackendMenuModel menuitem in ViewData["BackendPages"] as List<AKAWeb_v01.Models.BackendMenuModel>)
+        {
+            <div class="left-menu-item">@Html.ActionLink(menuitem.title, menuitem.action, menuitem.controller, null, new { @class = "left-menu-link" })</div>
+        }
+
+    </div>*@
+}
+
+<table class="table">
+    <tr>
+        <th>
+            Name
+        </th>
+        <th>
+            Email
+        </th>
+        <th>
+            Access Level
+        </th>
+
+    </tr>
+
+    @*@foreach (var item in Model)
+    {
+
+        <tr>
+            <td>
+                @item.product.description
+            </td>
+
+
+            <td>
+                @item.start_date
+            </td>
+
+
+
+            <td>
+                @item.end_date
+            </td>
+        </tr>
+    }*@
+</table>
+
+
+@*<p class="page-feedback">@ViewBag.ProductEditSuccess</p>
+    <p>
+        <a class="menu-link" href="#addProduct" data-toggle="collapse">Create New Product</a> | <a class="menu-link" href="#addProductType" data-toggle="collapse">Create New Product Type</a>
+        <div id="addProductType" class="collapse">
+            @using (Html.BeginForm("CreateProductType", "Backend", FormMethod.Post, new { id = "prodtype_form", enctype = "multipart/form-data" }))
+            {
+                <table class="table">
+                    <tr>
+                        <th>
+                            Product Type Name
+                        </th>
+
+                        <th></th>
+
+                    </tr>
+                    <tr>
+                        <td>
+                            <input class="form-control" type="text" name="prodtype" placeholder="Product Type Name" />
+                        </td>
+
+                        <td><button style="margin-top:5px;" type="submit" class="btn btn-default">Create Product Type</button></td>
+                    </tr>
+                </table>
+
+
+
+
+            }
+        </div>
+        <div id="addProduct" class="collapse">
+            @using (Html.BeginForm("CreateProduct", "Backend", FormMethod.Post, new { id = "content_form", enctype = "multipart/form-data" }))
+            {
+                <table class="table">
+                    <tr>
+                        <th>
+                            Cost in $
+                        </th>
+                        <th>
+                            Type
+                        </th>
+                        <th>
+                            Description
+                        </th>
+                        <th>
+                            Details
+                        </th>
+                        <th>
+                            Duration in years
+                        </th>
+                        <th>
+                            Initial stock
+                        </th>
+                        <th></th>
+
+                    </tr>
+                    <tr>
+                        <td>
+                            <input class="form-control" type="text" name="cost" placeholder="Cost" />
+                        </td>
+                        <td>
+
+                            @Html.DropDownList("ProductTypes", ViewData["ProductTypes"] as SelectList, new { form = "content_form", @class = "form-control" })
+                        </td>
+                        <td>
+                            <input class="form-control" type="text" name="description" placeholder="Description" />
+                        </td>
+                        <td>
+                            <input class="form-control" type="text" name="details" placeholder="Details" />
+                        </td>
+                        <td>
+                            <input class="form-control" type="text" name="duration" placeholder="Duration" />
+                        </td>
+                        <td>
+                            <input class="form-control" type="text" name="stock" placeholder="Initial Stock" />
+                        </td>
+                        <td><button style="margin-top:5px;" type="submit" class="btn btn-default">Create Product</button></td>
+                    </tr>
+                </table>}
+        </div>
+
+    </p>*@
+
+@*<table class="table">
+        <tr>
+            <th>
+                Cost in $
+            </th>
+            <th>
+                Type
+            </th>
+            <th>
+                Description
+            </th>
+            <th>
+                Duration in years
+            </th>
+            <th>
+                Details
+            </th>
+            <th>
+                Stock
+            </th>
+            <th>
+                Is Live
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            string formid = "edit" + item.id;
+            <tr>
+                <td>
+                    @using (Html.BeginForm("EditProduct", "Backend", FormMethod.Post, new { id = formid }))
+                    {
+                        <input class="form-control" type="text" name="cost" value="@item.cost" placeholder="@item.cost" />
+                        <input type="hidden" value="@item.id" name="productid" />
+                    }
+
+                </td>
+                <td>
+                    @Html.DropDownList("type", item.dropdown, new { form = formid, @class = "form-control" })
+
+                </td>
+                <td>
+                    <input form="@formid" class="form-control" type="text" name="description" value="@item.description" placeholder="@item.description" />
+
+                </td>
+                <td>
+                    <input form="@formid" class="form-control" type="text" name="length" value="@item.length" placeholder="@item.length" />
+
+                </td>
+                <td>
+                    <input form="@formid" class="form-control" type="text" name="details" value="@item.details" placeholder="@item.details" />
+                </td>
+                @if (ViewBag.LowStockNumber != null)
+                {
+                    if (item.stock <= ViewBag.LowStockNumber)
+                    {
+                        <td style="color: red">
+                            <b>Low stock!</b><br />
+                            <input form="@formid" class="form-control" type="text" name="stock" value="@item.stock" placeholder="@item.stock" />
+                        </td>
+                    }
+                    else
+                    {
+                        <td><input form="@formid" class="form-control" type="text" name="stock" value="@item.stock" placeholder="@item.stock" /></td>
+                    }
+                }
+                else
+                {
+                    <td><input form="@formid" class="form-control" type="text" name="stock" value="@item.stock" placeholder="@item.stock" /></td>
+                }
+
+
+
+
+
+
+                @if (item.isLive == true)
+                {
+                    <td>Yes</td>
+                }
+                else
+                {
+
+                    <td>No</td>
+                }
+
+
+                <td>
+                    <button type="submit" form="@formid" class="btn btn-default">Save Changes</button> |
+                    @if (item.isLive == true)
+                    {
+                        @Html.ActionLink("Disable", "ToggleIsLiveProduct", new { id = item.id });
+                    }
+                    else
+                    {
+                        @Html.ActionLink("Enable", "ToggleIsLiveProduct", new { id = item.id });
+
+                    }
+                </td>
+            </tr>
+        }
+
+    </table>*@
+
