@@ -2053,7 +2053,6 @@ namespace AKAWeb_v01.Controllers
 
         }
 
-<<<<<<< HEAD
 
         public ActionResult EditUsers()
         {
@@ -2074,7 +2073,6 @@ namespace AKAWeb_v01.Controllers
         }
 
 
-=======
         private List<UrlModelPair> getHyperLinksForJson()
         {
             List<UrlModelPair> links_list = new List<UrlModelPair>();
@@ -2097,7 +2095,6 @@ namespace AKAWeb_v01.Controllers
             return links_list;
         }
 
->>>>>>> origin/master
         public ActionResult ListProducts()
         {
             if (System.Web.HttpContext.Current.Session["username"] != null)

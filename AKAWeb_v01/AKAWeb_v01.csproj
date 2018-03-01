@@ -298,11 +298,8 @@
     <Content Include="Views\Backend\JobPosting.cshtml" />
     <Content Include="Views\SubPages\JobPostings.cshtml" />
     <Content Include="Views\Backend\_AsyncGetPages.cshtml" />
-<<<<<<< HEAD
     <Content Include="Views\Backend\EditUsers.cshtml" />
-=======
     <Content Include="Views\Backend\ListHyperlinks.cshtml" />
->>>>>>> origin/master
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
