@@ -1416,7 +1416,7 @@ namespace AKAWeb_v01.Controllers
         //Receives the user's id whose password will be randomized
         private string RandomPassword(string id)
         {
-            string password = Membership.GeneratePassword(8, 3);
+            string password = Membership.GeneratePassword(8, 1);
             string hashedPassword = hash_service.HashPassword(password);
             DBConnection testconn = new DBConnection();
             string query = "UPDATE Users SET password = @password WHERE id = @id";
@@ -1441,8 +1441,8 @@ namespace AKAWeb_v01.Controllers
         //the user requested when recovering his password
         private string setEmailString(string password)
         {
-            string message = "Your new temporary password is: " +
-                            password + 
+            string message = "Your new temporary password is:" + Environment.NewLine + Environment.NewLine +
+                            password + Environment.NewLine + Environment.NewLine +
                             " You can set a new password from your MyProfile page after signing in.";
             return message;
         }

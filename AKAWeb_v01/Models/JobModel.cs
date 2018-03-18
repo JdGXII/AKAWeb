@@ -24,7 +24,7 @@ namespace AKAWeb_v01.Models
         public string category { get; set; }
         [Display(Name = "Closing date")]
         public DateTime closing_date { get; set; } = DateTime.Now.AddMonths(3).Date;
-        [Display(Name = "URL of complete job description")]
+        [Display(Name = "Complete URL of job description including http: or https:")]
         public string job_url { get; set; }
 
         public List<SelectListItem> category_options { get; set; }
