@@ -287,7 +287,7 @@ namespace AKAWeb_v01.Controllers
             message.AppendLine("Email: kims@hkusa.com");
             message.AppendLine("www.AmericanKinesiology.org");
 
-            EmailService email = new EmailService(message.ToString(), sendTo + ", KimScott@americankinesiology.org, gwenm@hkusa.com, jmoore@americankinesiology.org, thomas.matthew.grimm@gmail.com", subject, true);
+            EmailService email = new EmailService(message.ToString(), sendTo + ", KimScott@americankinesiology.org, gwenm@hkusa.com, jmoore@americankinesiology.org", subject, true);
             bool success = email.sendEmail();
 
         
